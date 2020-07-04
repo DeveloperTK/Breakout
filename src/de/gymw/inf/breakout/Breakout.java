@@ -1,5 +1,6 @@
 package de.gymw.inf.breakout;
 
+import de.gymw.inf.breakout.views.GameOverView;
 import de.gymw.inf.breakout.views.GameView;
 import de.gymw.inf.breakout.views.HelpView;
 import de.gymw.inf.breakout.views.MenuView;
@@ -8,13 +9,12 @@ import org.foxat.pviewgui.action.DrawAction;
 import org.foxat.pviewgui.interfaces.Parent;
 import processing.core.PApplet;
 import processing.core.PFont;
-import processing.data.JSONObject;
 
 import java.util.HashMap;
 
 /**
  * @author Christian Schliz
- * @version 0.1
+ * @version 1.0
  * */
 public class Breakout extends PApplet implements Parent {
 
@@ -24,7 +24,10 @@ public class Breakout extends PApplet implements Parent {
 
     private MenuView menuView;
     private HelpView helpView;
-    private GameView gameView;
+    public GameView gameView;
+    public GameOverView gameOverView;
+
+    public boolean isLevelMode;
 
     public DrawAction style;
 
@@ -40,6 +43,8 @@ public class Breakout extends PApplet implements Parent {
         textSize(69);
         text("loading...", width/2f, height/2f);
 
+        frameRate(60);
+
         gui = new ProcessingGUI(this);
 
         gui.setLocalization("de.json");
@@ -54,6 +59,7 @@ public class Breakout extends PApplet implements Parent {
 
         viewSetup();
 
+        isLevelMode = false;
         loading = false;
     }
 
@@ -97,11 +103,14 @@ public class Breakout extends PApplet implements Parent {
         gameView = new GameView("gameView", this);
         gui.addView(gameView);
 
+        gameOverView = new GameOverView("gameOverView", this);
+        gui.addView(gameOverView);
+
         gui.setActiveView("menuView");
     }
 
     public PFont getFont(String byName) {
-        return fonts.getOrDefault(byName, createFont("Sans Serif", 48));
+        return fonts.getOrDefault(byName, createFont("Helvetica", 48));
     }
 
     public void draw() {
