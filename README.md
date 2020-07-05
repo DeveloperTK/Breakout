@@ -3,6 +3,8 @@
 <!--i shid and fard-->
 Breakout game made with Processing.
 
+<b>Note: I use <a href="https://bitbucket.org/devtk/processing-view-gui/src/master/">my own GUI Library</a></b>
+
 ## How to run
 
 1. Import the project into an IDE of your choice (preferrably IntelliJ IDEA or one that can use folder-based projects)
