@@ -4,8 +4,10 @@ import de.gymw.inf.breakout.Breakout;
 import de.gymw.inf.breakout.game.BrickHitAction;
 import de.gymw.inf.breakout.game.WorldObject;
 import de.gymw.inf.breakout.views.GameView;
+import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.data.JSONArray;
+import processing.data.JSONObject;
 
 import java.util.Objects;
 
@@ -15,9 +17,13 @@ public class Brick extends WorldObject {
     private BrickHitAction hit;
     private boolean activeState;
 
-    public static final BrickHitAction defaultAction = brick -> brick.setActiveState(false);
+    public static final BrickHitAction defaultAction = brick -> {
+        brick.setActiveState(false);
+        brick.parent.addScore(20);
+        brick.parent.b.playSound("doot");
+    };
 
-    private static int brickCount = 0;
+    public static int brickCount = 0;
 
     public Brick(GameView parent, float x, float y, float w, float h, int colstr, int colfill) {
         super(parent, x, y, w, h, colstr, colfill);
@@ -89,14 +95,45 @@ public class Brick extends WorldObject {
         return map;
     }
 
-    public void loadBricksFromFile(String path, int index) {
+    public static Brick[][] loadBricksFromFile(GameView parent, String file) {
         try {
-            JSONArray arr = parent.b.loadJSONArray(path);
-            arr.getJSONObject(index);
+            JSONObject levelObject = parent.b.loadJSONObject(file);
+            JSONArray rows = levelObject.getJSONArray("data");
+
+            JSONArray size = levelObject.getJSONArray("size");
+            Brick[][] map = new Brick[size.getInt(1)][size.getInt(0)];
+
+            int colstr = parent.b.color(192, 168, 178);
+            int colfill = parent.b.color(127, 0, 0, 1);
+            Brick.brickCount = 0;
+
+            for (int i = 0; i < rows.size(); i++) {
+                JSONArray row = rows.getJSONArray(i);
+                for(int j = 0; j < row.size(); j++) {
+                    switch(row.getInt(j)) {
+                        case 1:
+                            map[j][i] = new SolidBrick(parent, j * parent.b.width / 10F + 80, i * parent.b.height / 10F + 60, 60, 40, 0, 0);
+                            break;
+                        case 2:
+                            map[j][i] = new HardBrick(parent, j * parent.b.width / 10F + 80, i * parent.b.height / 10F + 60, 60, 40, 0, 0);
+                            Brick.brickCount++;
+                            break;
+                        case 3:
+                            map[j][i] = new SpecialBrick(parent, j * parent.b.width / 10F + 80, i * parent.b.height / 10F + 60, 60, 40, parent.b.color(255, 194, 41), colfill);
+                            Brick.brickCount++;
+                            break;
+                        default:
+                            map[j][i] = new Brick(parent, j * parent.b.width / 10F + 80, i * parent.b.height / 10F + 60, 60, 40, colstr, colfill);
+                            Brick.brickCount++;
+                            break;
+                    }
+                }
+            }
+
+            return map;
         } catch (RuntimeException ex) {
             ex.printStackTrace(System.err);
-            parent.b.getController().setActiveView("menuView");
+            return new Brick[0][0];
         }
     }
-
 }

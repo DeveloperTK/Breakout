@@ -10,7 +10,7 @@ public class SolidBrick extends Brick {
     }
 
     private void hit(Brick brick) {
-        parent.playSound(3);
+        parent.b.playSound("bump");
     }
 
 }

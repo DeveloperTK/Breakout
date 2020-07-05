@@ -2,7 +2,6 @@ package de.gymw.inf.breakout.game;
 
 import de.gymw.inf.breakout.game.brick.Brick;
 import de.gymw.inf.breakout.views.GameView;
-import org.jetbrains.annotations.NotNull;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PVector;
@@ -13,15 +12,22 @@ public class Ball extends DynamicWorldObject {
     float trueSpeed;
     Paddle pd;
 
+    public boolean fireMode;
+
+    float startPosX, startPosY;
+
     private Brick[][] bricks;
 
     private float maxHeight;
 
     public Ball(GameView parent, float x, float y, float d, int colstr, int colfill, PVector speed, Paddle pd) {
         super(parent, x, y, d, d, colstr, colfill, speed);
+        this.startPosX = x;
+        this.startPosY = y;
         this.d = d;
         this.trueSpeed = 1;
         this.pd = pd;
+        this.fireMode = false;
     }
 
     @Override
@@ -29,7 +35,11 @@ public class Ball extends DynamicWorldObject {
         PApplet p = parent.b;
         p.stroke(colstr);
         p.strokeWeight(2);
-        p.fill(colfill);
+        if(fireMode) {
+            p.fill(p.color(235, 125, 0));
+        } else {
+            p.fill(colfill);
+        }
 
         p.ellipseMode(PConstants.CENTER);
 
@@ -71,11 +81,12 @@ public class Ball extends DynamicWorldObject {
     private void checkForPaddleCollision() {
         if(this.collidesAtTop(pd)) {
             this.speed.y = -Math.abs(this.getYSpeed());
+            this.fireMode = false;
         }
     }
 
     private void checkForDeath() {
-        if(this.y >= this.maxHeight && this.maxHeight > 0) {
+        if(this.maxHeight > 0 && this.y >= this.maxHeight) {
             parent.die();
         }
     }
@@ -97,17 +108,17 @@ public class Ball extends DynamicWorldObject {
 
     void checkCollision(Brick brick) {
         if(this.collidesAtTop(brick)) {
-            this.speed.y = -Math.abs(this.getYSpeed());
             brick.hitAction();
+            if(!fireMode) this.speed.y = -Math.abs(this.getYSpeed());
         } else if(this.collidesAtBottom(brick)) {
-            this.speed.y = Math.abs(this.getYSpeed());
             brick.hitAction();
+            if(!fireMode) this.speed.y = Math.abs(this.getYSpeed());
         } else if(this.collidesAtLeft(brick)) {
-            this.speed.x = -Math.abs(this.getXSpeed());
             brick.hitAction();
+            if(!fireMode) this.speed.x = -Math.abs(this.getXSpeed());
         } else if(this.collidesAtRight(brick)) {
-            this.speed.x = Math.abs(this.getXSpeed());
             brick.hitAction();
+            if(!fireMode) this.speed.x = Math.abs(this.getXSpeed());
         }
     }
 
@@ -117,5 +128,10 @@ public class Ball extends DynamicWorldObject {
 
     public void setMaxHeight(float maxHeight) {
         this.maxHeight = maxHeight;
+    }
+
+    public void resetPosition() {
+        this.x = this.startPosX;
+        this.y = this.startPosY;
     }
 }

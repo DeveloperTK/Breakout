@@ -9,17 +9,21 @@ public class Paddle extends WorldObject {
     Breakout p;
     private float trueSpeed;
 
+    private float startPosX, startPosY;
+
     public Paddle(GameView parent, float x, float y, float w, float h, int colstr, int colfill) {
         super(parent, x, y, w, h, colstr, colfill);
         this.p = parent.b;
         trueSpeed = 6;
+        startPosX = x;
+        startPosY = y;
     }
 
     // move(1) = right | move{-1} = left
     public void move(int direction) {
-        if(direction > 0 && this.x - this.w/2 >= 0) {
+        if(direction > 0 && this.x - this.w/2 <= parent.b.width) {
             this.x += this.trueSpeed * direction;
-        } else if(direction < 0 && this.x + this.w/2 <= parent.b.width) {
+        } else if(direction < 0 && this.x + this.w/2 >= 0) {
             this.x += this.trueSpeed * direction;
         }
     }
@@ -44,5 +48,10 @@ public class Paddle extends WorldObject {
 
     public void setTrueSpeed(float trueSpeed) {
         this.trueSpeed = trueSpeed;
+    }
+
+    public void resetPosition() {
+        this.x = this.startPosX;
+        this.y = this.startPosY;
     }
 }

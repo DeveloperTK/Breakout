@@ -6,11 +6,14 @@ import org.foxat.pviewgui.element.PGButton;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
+import javax.swing.*;
+
 public class HelpView extends PGView {
 
     Breakout b;
 
     PGButton back;
+    PGButton question;
 
     public HelpView(String label, PApplet p) {
         super(label, p);
@@ -21,6 +24,12 @@ public class HelpView extends PGView {
         back.setLabel(b.getController().getLocaleString(back.objectName, "Back"));
         back.setMouseReleasedAction((x,y) -> b.getController().setActiveView("menuView"));
         registerElement(back);
+
+        question = new PGButton(72, 72, 48, 48, "questionButton");
+        question.setStyle(b.style);
+        question.setLabel("?");
+        question.setMouseReleasedAction((x,y) -> JOptionPane.showMessageDialog(null, "Level Folder Path: " + parent.sketchPath("level") + "\n Please put the custom.json there!"));
+        registerElement(question);
     }
 
     @Override
@@ -28,6 +37,6 @@ public class HelpView extends PGView {
         b.background(24);
         b.textFont(b.getFont("minecraftia"), 24);
         b.textMode(PConstants.CENTER);
-        b.text("A man has fallen for a man\nin Lego City.", b.width/2f, b.height/2f);
+        b.text("For more Information, please view\nDeveloperTK/Breakout on GitHub", b.width/2f, b.height/2f);
     }
 }

@@ -22,4 +22,8 @@ public abstract class WorldObject {
 
     public abstract void draw();
 
+    public GameView getParent() {
+        return parent;
+    }
+
 }

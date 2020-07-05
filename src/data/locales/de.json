@@ -1,6 +1,7 @@
 {
   "startButton": "Spiel starten",
   "helpButton": "Anleitung",
+  "demoButton": "Demo",
   "quitButton": "Beenden",
   "backButton": "Zurück",
   "motd": [

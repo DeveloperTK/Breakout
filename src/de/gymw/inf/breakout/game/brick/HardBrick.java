@@ -16,12 +16,20 @@ public class HardBrick extends Brick {
         durability--;
         if(durability == 3) {
             colfill = parent.b.color(156, 0, 0);
+            brick.getParent().addScore(10);
+            brick.getParent().b.playSound("doot");
         } else if(durability == 2) {
             colfill = parent.b.color(156, 156, 0);
+            brick.getParent().addScore(10);
+            brick.getParent().b.playSound("doot");
         } else if(durability == 1) {
             colfill = parent.b.color(0, 156, 0);
+            brick.getParent().addScore(10);
+            brick.getParent().b.playSound("doot");
         } else if(durability == 0) {
             brick.setActiveState(false);
+            brick.getParent().addScore(20);
+            brick.getParent().b.playSound("fireball");
         }
     }
 

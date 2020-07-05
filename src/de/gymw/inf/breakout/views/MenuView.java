@@ -10,7 +10,7 @@ public class MenuView extends PGView {
 
     Breakout b;
 
-    PGButton startButton, helpButton, quitButton;
+    PGButton startButton, helpButton, demoButton, quitButton;
 
     public MenuView(String label, PApplet p) {
         super(label, p);
@@ -19,25 +19,30 @@ public class MenuView extends PGView {
 
         startButton = new PGButton(b.width/2f, b.height*3f/5f - 72, b.width/2f, 48, "startButton");
         helpButton = new PGButton(b.width/2f, b.height*3f/5f, b.width/2f, 48, "helpButton");
-        quitButton = new PGButton(b.width/2f, b.height*3f/5f + 72, b.width/2f, 48, "quitButton");
+        demoButton = new PGButton(b.width/2f - b.width/8f - 6, b.height*3f/5f + 72, b.width/4f - 12, 48, "demoButton");
+        quitButton = new PGButton(b.width/2f + b.width/8f + 6, b.height*3f/5f + 72, b.width/4f - 12, 48, "quitButton");
 
         startButton.setLabel(b.getController().getLocaleString("startButton", "Start"));
         helpButton.setLabel(b.getController().getLocaleString("helpButton", "Help"));
+        demoButton.setLabel(b.getController().getLocaleString("demoButton", "Demo"));
         quitButton.setLabel(b.getController().getLocaleString("quitButton", "Quit"));
 
-        startButton.setMouseReleasedAction((x, y) -> {
-            b.getController().setActiveView("gameView");
-            b.gameView.load();
-        });
+        startButton.setMouseReleasedAction((x, y) -> b.getController().setActiveView("levelSelectView"));
         helpButton.setMouseReleasedAction((x, y) -> b.getController().setActiveView("helpView"));
+        demoButton.setMouseReleasedAction((x, y) -> {
+            b.getController().setActiveView("gameView");
+            b.gameView.loadAsDemo();
+        });
         quitButton.setMouseReleasedAction((x, y) -> b.exit());
 
         startButton.setStyle(b.style);
         helpButton.setStyle(b.style);
+        demoButton.setStyle(b.style);
         quitButton.setStyle(b.style);
 
         registerElement(startButton);
         registerElement(helpButton);
+        registerElement(demoButton);
         registerElement(quitButton);
 
         JSONArray messages = b.getController().getLocale().getJSONArray("motd");

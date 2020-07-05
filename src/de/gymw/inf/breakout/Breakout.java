@@ -1,14 +1,14 @@
 package de.gymw.inf.breakout;
 
-import de.gymw.inf.breakout.views.GameOverView;
-import de.gymw.inf.breakout.views.GameView;
-import de.gymw.inf.breakout.views.HelpView;
-import de.gymw.inf.breakout.views.MenuView;
+import de.gymw.inf.breakout.views.*;
 import org.foxat.pviewgui.ProcessingGUI;
 import org.foxat.pviewgui.action.DrawAction;
 import org.foxat.pviewgui.interfaces.Parent;
 import processing.core.PApplet;
 import processing.core.PFont;
+import processing.core.PShape;
+import processing.data.JSONObject;
+import processing.sound.SoundFile;
 
 import java.util.HashMap;
 
@@ -20,18 +20,21 @@ public class Breakout extends PApplet implements Parent {
 
     public ProcessingGUI gui;
 
-    private boolean loading = true;
-
-    private MenuView menuView;
-    private HelpView helpView;
+    public MenuView menuView;
+    public HelpView helpView;
     public GameView gameView;
     public GameOverView gameOverView;
+    public LevelSelectView levelSelectView;
 
     public boolean isLevelMode;
 
     public DrawAction style;
 
+    private PShape hardcoreHeart;
+    private PShape emptyHeart;
+
     HashMap<String, PFont> fonts;
+    HashMap<String, SoundFile> sounds;
 
     public void settings() {
         size(800, 600);
@@ -47,24 +50,43 @@ public class Breakout extends PApplet implements Parent {
 
         gui = new ProcessingGUI(this);
 
-        gui.setLocalization("de.json");
+        gui.setLocalization("locales/de.json");
 
-        PFont pricedown = loadFont("pricedown-48.vlw");
-        PFont minecraftia = loadFont("minecraftia-48.vlw");
-        PFont pressstart = loadFont("pressstart-16.vlw");
+        PFont pricedown = loadFont("fonts/pricedown-48.vlw");
+        PFont minecraftia = loadFont("fonts/minecraftia-48.vlw");
+        PFont pressstart = loadFont("fonts/pressstart-16.vlw");
         fonts = new HashMap<>();
         fonts.put("pricedown", pricedown);
         fonts.put("minecraftia", minecraftia);
         fonts.put("pressstart", pressstart);
 
+        SoundFile bump = new SoundFile(this, "sounds/smb_bump.wav");
+        SoundFile fireball = new SoundFile(this, "sounds/smb_fireball.wav");
+        SoundFile gameover = new SoundFile(this, "sounds/smb_gameover.wav");
+        SoundFile mariodie = new SoundFile(this, "sounds/smb_mariodie.wav");
+        SoundFile pause = new SoundFile(this, "sounds/smb_pause.wav");
+        SoundFile stage_clear = new SoundFile(this, "sounds/smb_stage_clear.wav");
+        SoundFile doot = new SoundFile(this, "sounds/menu_navigate_03.wav");
+        doot.amp(0.5F);
+        sounds = new HashMap<>();
+        sounds.put("bump", bump);
+        sounds.put("fireball", fireball);
+        sounds.put("gameover", gameover);
+        sounds.put("mariodie", mariodie);
+        sounds.put("pause", pause);
+        sounds.put("stage_clear", stage_clear);
+        sounds.put("doot", doot);
+
         viewSetup();
 
+        hardcoreHeart = loadShape("sprites/Hardcore_Heart.svg");
+        emptyHeart = loadShape("sprites/Empty_Heart.svg");
+
         isLevelMode = false;
-        loading = false;
+        saveAllPaths();
     }
 
     private void viewSetup() {
-
         style = (btn, b) -> {
             b.pushStyle();
             b.rectMode(3);
@@ -82,7 +104,7 @@ public class Breakout extends PApplet implements Parent {
 
             b.noStroke();
             b.fill(127);
-            b.text(btn.getLabel(), btn.x + 10.0F, btn.y + 10.0F);
+            b.text(btn.getLabel(), btn.x + 2F, btn.y + 10.0F);
 
             if (b.mousePressed && btn.touchUpInside((float) b.mouseX, (float) b.mouseY)) {
                 b.fill(255);
@@ -90,7 +112,7 @@ public class Breakout extends PApplet implements Parent {
                 b.fill(0);
             }
 
-            b.text(btn.getLabel(), btn.x + 8.0F, btn.y + 8.0F);
+            b.text(btn.getLabel(), btn.x, btn.y + 8.0F);
             b.popStyle();
         };
 
@@ -106,6 +128,9 @@ public class Breakout extends PApplet implements Parent {
         gameOverView = new GameOverView("gameOverView", this);
         gui.addView(gameOverView);
 
+        levelSelectView = new LevelSelectView("levelSelectView", this);
+        gui.addView(levelSelectView);
+
         gui.setActiveView("menuView");
     }
 
@@ -113,12 +138,42 @@ public class Breakout extends PApplet implements Parent {
         return fonts.getOrDefault(byName, createFont("Helvetica", 48));
     }
 
+    public SoundFile getSound(String byName) {
+        return sounds.getOrDefault(byName, null);
+    }
+
+    public void saveAllPaths() {
+        for(int i = 0; i <= 5; i++) {
+            JSONObject x = loadJSONObject("levels/level" + i + ".json");
+            saveJSONObject(x, "levels/level" + i + ".json");
+        }
+    }
+
+    public void playSound(String name) {
+        try {
+            SoundFile x = getSound(name);
+            x.stop();
+            x.play();
+        } catch(RuntimeException ex) {
+            ex.printStackTrace();
+            System.err.println("Sound with name " + name + " could not be found!");
+        }
+    }
+
+    public PShape getHardcoreHeart() {
+        return hardcoreHeart;
+    }
+
+    public PShape getEmptyHeart() {
+        return emptyHeart;
+    }
+
     public void draw() {
 
     }
 
     public static void main(String[] args) {
-        PApplet.main(Breakout.class.getName());
+        PApplet.main("de.gymw.inf.breakout.Breakout");
     }
 
     @Override
