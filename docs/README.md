@@ -12,8 +12,8 @@ Von hier aus können sie entweder das normale Spiel starten oder den Demo-Modus 
 
 ## Das Spielfeld
 
-Das Spielfeld besteht aus 9 x 5 Blöcken. Am unteren Bildschirmrand ist ein Paddel, welches man mit den Pfeiltasten rechts und links,
-entlang der x-Achse bewegen kann. Unten links wird der aktuelle Score angezeigt, unten rechts, die Anzahl der Leben.
+Das Spielfeld besteht aus 9 x 5 Blöcken. Am unteren Bildschirmrand ist ein Paddel, welches man mit den Pfeiltasten rechts und links
+entlang der x-Achse bewegen kann. Unten links wird der aktuelle Score angezeigt, unten rechts die Anzahl der Leben.
 
 ### Normale Blöcke
 
@@ -21,7 +21,7 @@ Die grauen Blöcke verhalten sich ganz normal, an ihnen prallt der Ball ab und z
 
 ### Unzerstörbare Blöcke
 
-Die Blauen Blöcke verschwinden beim auftreffen nicht, sie müssen allerdings nicht zerstört werden, um das Level zu beenden.
+Die blauen Blöcke verschwinden beim auftreffen nicht, sie müssen allerdings nicht zerstört werden, um das Level zu beenden.
 
 ### Harte Blöcke
 
@@ -30,7 +30,7 @@ Nach dem ersten Treffer werden diese gelb, nach dem zweiten grün.
 
 ### Spezial-Blöcke
 
-Trifft man einen goldenen Spezialblock, kann eines der folgenden Dinge passieren:
+Trifft man einen goldenen Spezialblock, passiert eine der folgenden Aktionen:
 
     1. Der Ball geht in Flammen auf und zerstört so lange alles was sich in seinen Weg stellt, bis er wieder das Paddel trfft
     2. Das Paddel wird für 10 Sekunden doppelt so groß
@@ -39,7 +39,7 @@ Trifft man einen goldenen Spezialblock, kann eines der folgenden Dinge passieren
     
 ## Ende des Spiels
 
-Das Spiel ist dann beendet, wenn der Spieler alle zerstörbaren blöcke zerstört, oder alle seine Leben verloren hat.
+Das Spiel ist dann beendet, wenn der Spieler alle zerstörbaren Blöcke zerstört oder alle seine Leben verloren hat.
 Die drei besten Ergebnisse werden in einer Bestenliste angezeigt:
 
 ![Spielende mit Bestenliste](./game-over.png)
@@ -78,4 +78,4 @@ Das zweidimensionale Array `data` ist ein Abbild des Spielfelds. Die Zahlen steh
     5: Spezial - doppelte Punkte
     6: Spezial - zusätzliches Leben
     
-Gespielt werden kann das eigene Level durch den Knopf `CUSTOM LEVEL` in der Levelauswahl.
+Gespielt werden kann das eigene Level durch den Button `CUSTOM LEVEL` in der Levelauswahl.
