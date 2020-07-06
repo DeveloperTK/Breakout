@@ -1,6 +1,6 @@
 # Spielbeschreibung
 
-Breakout v1.1 von Christian Schliz
+Breakout v1.1 von Christian Schliz und Paul Schmitz
 
 ## Hauptmenü
 
