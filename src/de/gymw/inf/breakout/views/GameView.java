@@ -23,6 +23,7 @@ public class GameView extends PGView {
     private int tpf;
 
     private final boolean DEBUG_MODE = false;
+    private float multiplier;
 
     public GameView(String label, PApplet p) {
         super(label, p);
@@ -50,11 +51,11 @@ public class GameView extends PGView {
 
     Brick[][] bricks;
     Ball ball;
-    Paddle paddle;
+    public Paddle paddle;
 
     public void loadAsDemo() {
         loadRandom();
-        level = "%DEMO%";
+        level = "DEMO";
         isDemo = true;
         isPaused = false;
         isActive = true;
@@ -83,6 +84,7 @@ public class GameView extends PGView {
         health = 3;
         tpf = 6;
         level = null;
+        multiplier = 1.0f;
 
         b.colorMode(PConstants.RGB);
         paddle = new Paddle(this, b.width / 2.0F, b.height - 50, 80, 10, b.color(255), b.color(255));
@@ -149,6 +151,11 @@ public class GameView extends PGView {
         for(int i = 0; i < health; i++) {
             b.shape(b.getHardcoreHeart(), b.width - 24 - 32 * i, b.height - 24, 32, 32);
         }
+
+        if(multiplier != 1) {
+            b.fill(255);
+            b.text("x" + PApplet.parseFloat(Math.round(multiplier*10)) / 10f, b.width/2f - 12, b.height);
+        }
     }
 
     @Override
@@ -170,16 +177,18 @@ public class GameView extends PGView {
     // scoring system
 
     public void addScore(int score) {
-        this.score += score;
+        this.score += score * multiplier;
     }
 
     public void die() {
         health--;
 
         // stops the ball from moving
-        this.isActive = false;
-        this.isPaused = false;
-        this.ball.fireMode = false;
+        if(!isDemo) {
+            this.isActive = false;
+            this.isPaused = false;
+            this.ball.fireMode = false;
+        }
 
         // resets the direction the ball is moving in
         ball.setSpeed(PVector.fromAngle(PApplet.radians(-30)));
@@ -222,5 +231,17 @@ public class GameView extends PGView {
 
     public void fire() {
         ball.fireMode = true;
+    }
+
+    public boolean isFire() {
+        return ball.fireMode;
+    }
+    
+    public void setMultiplier(float multiplier) {
+        this.multiplier = multiplier;
+    }
+
+    public void addLife() {
+        this.health += 1;
     }
 }

@@ -30,7 +30,7 @@ public class GameOverView extends PGView {
         startAt = b.frameCount;
         this.success = success;
         String level = b.gameView.level;
-        if (level == "%DEMO%") {
+        if (level == "DEMO") {
             b.getController().setActiveView("menuView");
             return;
         }

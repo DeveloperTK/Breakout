@@ -20,7 +20,11 @@ public class Brick extends WorldObject {
     public static final BrickHitAction defaultAction = brick -> {
         brick.setActiveState(false);
         brick.parent.addScore(20);
-        brick.parent.b.playSound("doot");
+        if(brick.getParent().isFire()) {
+            brick.parent.b.playSound("breakblock");
+        } else {
+            brick.parent.b.playSound("doot");
+        }
     };
 
     public static int brickCount = 0;
@@ -80,7 +84,9 @@ public class Brick extends WorldObject {
         for(int i = 0; i < lenx; i++) {
             for(int j = 0; j < leny; j++) {
                 float rand = parent.b.random(0F, 100F);
-                if(rand > 15) {
+                if(rand > 90) {
+                    map[i][j] = new SpecialBrick(parent, i * parent.b.width / 10F + 80, j * parent.b.height / 10F + 60, 60, 40, parent.b.color(255, 194, 41), colfill, Math.round(parent.b.random(3, 6)));
+                } else if(rand > 15) {
                     map[i][j] = new Brick(parent, i * parent.b.width / 10F + 80, j * parent.b.height / 10F + 60, 60, 40, colstr, colfill);
                     Brick.brickCount++;
                 } else if(rand > 7) {
@@ -119,7 +125,10 @@ public class Brick extends WorldObject {
                             Brick.brickCount++;
                             break;
                         case 3:
-                            map[j][i] = new SpecialBrick(parent, j * parent.b.width / 10F + 80, i * parent.b.height / 10F + 60, 60, 40, parent.b.color(255, 194, 41), colfill);
+                        case 4:
+                        case 5:
+                        case 6:
+                            map[j][i] = new SpecialBrick(parent, j * parent.b.width / 10F + 80, i * parent.b.height / 10F + 60, 60, 40, parent.b.color(255, 194, 41), colfill, row.getInt(j));
                             Brick.brickCount++;
                             break;
                         default:

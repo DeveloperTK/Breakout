@@ -66,6 +66,9 @@ public class Breakout extends PApplet implements Parent {
         SoundFile mariodie = new SoundFile(this, "sounds/smb_mariodie.wav");
         SoundFile pause = new SoundFile(this, "sounds/smb_pause.wav");
         SoundFile stage_clear = new SoundFile(this, "sounds/smb_stage_clear.wav");
+        SoundFile breakblock = new SoundFile(this, "sounds/smb_breakblock.wav");
+        SoundFile powerup = new SoundFile(this, "sounds/smb_powerup.wav");
+        SoundFile oneup = new SoundFile(this, "sounds/smb_1-up.wav");
         SoundFile doot = new SoundFile(this, "sounds/menu_navigate_03.wav");
         doot.amp(0.5F);
         sounds = new HashMap<>();
@@ -75,6 +78,9 @@ public class Breakout extends PApplet implements Parent {
         sounds.put("mariodie", mariodie);
         sounds.put("pause", pause);
         sounds.put("stage_clear", stage_clear);
+        sounds.put("breakblock", breakblock);
+        sounds.put("powerup", powerup);
+        sounds.put("1-up", oneup);
         sounds.put("doot", doot);
 
         viewSetup();

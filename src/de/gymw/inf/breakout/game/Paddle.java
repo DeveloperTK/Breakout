@@ -9,7 +9,7 @@ public class Paddle extends WorldObject {
     Breakout p;
     private float trueSpeed;
 
-    private float startPosX, startPosY;
+    public float startPosX, startPosY, startWidth;
 
     public Paddle(GameView parent, float x, float y, float w, float h, int colstr, int colfill) {
         super(parent, x, y, w, h, colstr, colfill);
@@ -17,6 +17,7 @@ public class Paddle extends WorldObject {
         trueSpeed = 6;
         startPosX = x;
         startPosY = y;
+        startWidth = w;
     }
 
     // move(1) = right | move{-1} = left

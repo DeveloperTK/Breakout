@@ -13,6 +13,5 @@
     <orderEntry type="library" name="processing-gui-lib-1.3" level="project" />
     <orderEntry type="library" exported="" name="core" level="project" />
     <orderEntry type="library" name="processing-sound" level="project" />
-    <orderEntry type="library" name="video" level="project" />
   </component>
 </module>
