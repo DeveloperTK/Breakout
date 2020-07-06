@@ -1,7 +1,7 @@
 # Breakout
 
 <!--i shid and fard-->
-Breakout game made with Processing.
+Breakout game made with Processing. <a href="./docs">Explanations (German)</a>
 
 <b>Note: I use <a href="https://bitbucket.org/devtk/processing-view-gui/src/master/">my own GUI Library</a></b>
 
