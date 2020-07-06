@@ -54,7 +54,7 @@ Drückt man „Spiel starten“ im Hauptmenü, erscheint die Levelauswahl:
 
 Das Spiel enthält sechs vorgefertigte Level, der Spieler kann aber auch seine eigenen erstellen. Dazu muss
 die `custom.json` Datei im Sketch-Ordner bearbeitet (oder erstellt) werden. Den richtigen Pfad findet man, wenn
-man im Hilfe-Menü auf das Fragezeichen klickt. Die `custom.json` Datei muss folgende Struktur haben:
+man im Anleitungs-Menü auf das Fragezeichen klickt. Die `custom.json` Datei muss folgende Struktur haben:
 
     {
       difficulty: 0,
