@@ -2,7 +2,6 @@ package de.gymw.inf.breakout.views;
 
 import de.gymw.inf.breakout.Breakout;
 import org.foxat.pviewgui.PGView;
-import org.foxat.pviewgui.action.DrawAction;
 import org.foxat.pviewgui.element.PGButton;
 import processing.core.PApplet;
 import processing.data.JSONArray;
@@ -18,8 +17,6 @@ public class MenuView extends PGView {
         b = (Breakout) p;
         pulseSize = 0;
 
-
-
         startButton = new PGButton(b.width/2f, b.height*3f/5f - 72, b.width/2f, 48, "startButton");
         helpButton = new PGButton(b.width/2f, b.height*3f/5f, b.width/2f, 48, "helpButton");
         quitButton = new PGButton(b.width/2f, b.height*3f/5f + 72, b.width/2f, 48, "quitButton");
@@ -28,7 +25,10 @@ public class MenuView extends PGView {
         helpButton.setLabel(b.getController().getLocaleString("helpButton", "Help"));
         quitButton.setLabel(b.getController().getLocaleString("quitButton", "Quit"));
 
-        startButton.setMouseReleasedAction((x, y) -> b.getController().setActiveView("gameView"));
+        startButton.setMouseReleasedAction((x, y) -> {
+            b.getController().setActiveView("gameView");
+            b.gameView.load();
+        });
         helpButton.setMouseReleasedAction((x, y) -> b.getController().setActiveView("helpView"));
         quitButton.setMouseReleasedAction((x, y) -> b.exit());
 
@@ -60,7 +60,7 @@ public class MenuView extends PGView {
     public void draw() {
         b.background(24);
 
-        pulseSize = 4.5f * PApplet.sin(b.frameCount/30f) + 20f;
+        pulseSize = 4.5f * PApplet.sin(b.frameCount/(30f)) + 20f;
 
         b.stroke(0);
         b.strokeWeight(2);
